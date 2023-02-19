@@ -51,6 +51,16 @@ public:
 	void setConstant(const T& input) {
 		m_constant = input;
 	}
+	void fixMatrix() {
+		for (int i = 0; i < m_quadratic_coefficient.NumCols(); i++) {
+			for (int j = i; j < m_quadratic_coefficient.NumCols(); j++) {
+				if (i < j) {
+					m_quadratic_coefficient[i][j] += m_quadratic_coefficient[j][i];
+					m_quadratic_coefficient[j][i] = 0;
+				}
+			}
+		}
+	}
 
 private:
 	void generateRandom(){

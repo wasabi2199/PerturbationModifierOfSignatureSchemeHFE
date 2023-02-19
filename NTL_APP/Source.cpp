@@ -125,19 +125,24 @@ Vec<Polynomial<T>> affineTransformationS(Vec<Polynomial<T>> polynomials) {
 }
 
 
+
+
 int main()
 {
 	Vec<Polynomial<GF2>> sustava;
 	Polynomial<GF2> f1;
-	Polynomial<GF2> f2;
-	sustava.append(f1);
-	sustava.append(f2);
+	f1.fixMatrix();
+	cout << endl << f1.getQuadraticCoefficient();
+
+	//Polynomial<GF2> f2;
+	//sustava.append(f1);
+	//sustava.append(f2);
 	//Vec<Polynomial<GF2>> sustava2 = affineTransformation<GF2>(sustava);
 	/*cout << endl << "Q' 1: " << endl << sustava2[0].getQuadraticCoefficient() << endl << "L' 1: " << endl << sustava2[0].getLinearCoefficient();
 	cout <<endl<< "Q' 2: " << endl << sustava2[1].getQuadraticCoefficient() << endl << "L' 2: " << endl << sustava2[1].getLinearCoefficient();*/
-	Vec<Polynomial<GF2>> sustava3 = affineTransformation<GF2>(sustava);
-	cout << endl << "Q'' 1: " << endl << sustava3[0].getQuadraticCoefficient() << endl << "L'' 1: " << endl << sustava3[0].getLinearCoefficient() << endl << "A'' 1: " << endl << sustava3[0].getConstant();
-	cout << endl << "Q'' 2: " << endl << sustava3[1].getQuadraticCoefficient() << endl << "L'' 2: " << endl << sustava3[1].getLinearCoefficient() << endl << "A'' 2: " << endl << sustava3[1].getConstant();
+	//Vec<Polynomial<GF2>> sustava3 = affineTransformation<GF2>(sustava);
+	//cout << endl << "Q'' 1: " << endl << sustava3[0].getQuadraticCoefficient() << endl << "L'' 1: " << endl << sustava3[0].getLinearCoefficient() << endl << "A'' 1: " << endl << sustava3[0].getConstant();
+	//cout << endl << "Q'' 2: " << endl << sustava3[1].getQuadraticCoefficient() << endl << "L'' 2: " << endl << sustava3[1].getLinearCoefficient() << endl << "A'' 2: " << endl << sustava3[1].getConstant();
 	return 0;
 }
 
