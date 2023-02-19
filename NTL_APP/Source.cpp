@@ -18,6 +18,7 @@ NTL_CLIENT
 // generovanie verejneho kluca
 // generovanie podpisu - inverzna afinna tranformacia ku T, riesenie sustavy P', inverzna afinna tranformacia ku S
 // overenie podpisu - dosadenie hodnoty hodnot podpisu do verejneho kluca
+//aaa
 
 template <class T>
 Polynomial<T> applyAffineTransformation(const Polynomial<T> &polynomial, const Mat<T> &affineTransformationMatrix, const Vec<T> &affineTransformationVector) {
