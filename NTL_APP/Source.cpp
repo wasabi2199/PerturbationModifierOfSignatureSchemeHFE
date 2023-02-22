@@ -11,6 +11,7 @@
 #include<NTL/GF2.h>
 #include<NTL/vec_GF2.h>
 #include<NTL/mat_GF2.h>
+#include<NTL/GF2EX.h>
 
 NTL_CLIENT
 
@@ -126,13 +127,12 @@ Vec<Polynomial<T>> affineTransformationS(Vec<Polynomial<T>> polynomials) {
 
 
 
-
 int main()
 {
-	Vec<Polynomial<GF2>> sustava;
-	Polynomial<GF2> f1;
-	f1.fixMatrix();
-	cout << endl << f1.getQuadraticCoefficient();
+	//Vec<Polynomial<GF2>> sustava;
+	//Polynomial<GF2> f1;
+	//f1.fixMatrix();
+	//cout << endl << f1.getQuadraticCoefficient();
 
 	//Polynomial<GF2> f2;
 	//sustava.append(f1);
@@ -143,6 +143,117 @@ int main()
 	//Vec<Polynomial<GF2>> sustava3 = affineTransformation<GF2>(sustava);
 	//cout << endl << "Q'' 1: " << endl << sustava3[0].getQuadraticCoefficient() << endl << "L'' 1: " << endl << sustava3[0].getLinearCoefficient() << endl << "A'' 1: " << endl << sustava3[0].getConstant();
 	//cout << endl << "Q'' 2: " << endl << sustava3[1].getQuadraticCoefficient() << endl << "L'' 2: " << endl << sustava3[1].getLinearCoefficient() << endl << "A'' 2: " << endl << sustava3[1].getConstant();
+	
+	//stupen poly
+	
+	GF2X modulus;
+	cout << "zadaj modulus polynom> ";
+	cin >> modulus;
+	long deg_n = deg(modulus);
+	GF2E::init(modulus);
+	GF2EX hfe;
+	long n = 7;
+	random(hfe, n);
+	//for (int i = 0; i < n; i++) {
+	//	cout << "koeficient X^"<< i <<": " << endl;
+	//	cin >> hfe[i];
+	//}
+	//long deg_d = 6;
+	//random(hfe, deg_d); 
+	cout << "zadaj hfe polynom> ";
+	cin >> hfe;
+	GF2E coefficient = hfe[0];
+
+	auto dd = deg(coefficient._GF2E__rep);
+	Vec<GF2> abs_coefficients;
+	for (int i = 0; i <= dd; i++)
+	{
+		abs_coefficients.append(coeff(coefficient._GF2E__rep, i));
+	}
+	while (abs_coefficients.length() < 3) {
+		abs_coefficients.append(GF2(0));
+	}
+	//cout << abs_coeffs;
+
+	Vec<Vec<GF2>> linear_coefficients;
+	for (int i = 0; i < deg_n; i++) {
+		Vec<GF2> vector;
+		vector.SetLength(deg_n);
+		linear_coefficients.append(vector);
+	}
+	
+	GF2E B;
+	GF2E alfa = hfe[1];
+	cout << alfa << endl;
+	//cout << "zadaj alfu ";
+	//cin >> alfa;
+	/*for (int i = 0; i < n; i++) {
+		cout << endl <<"i je: " << i << endl;
+		if (pow(2, i) > deg(hfe)) {
+			break;
+		}
+		B = hfe[pow(2, i)];
+		cout << "B je: " << B<<endl;
+		for (int j = 0; j < 3; j++) {
+			//cout << "alfa^" << (j * pow(2, i)) << " je: " << power(alfa, (j * pow(2, i))) << endl;
+			cout << "B * alfa je: "<<B * power(alfa, (j * pow(2, i)))<<endl;
+			GF2E aaa = B * power(alfa, (j * pow(2, i)));
+			for (int k = 0; k <= n; k++) {
+				GF2 pozicia = coeff(aaa._GF2E__rep, k);
+				if (pozicia == 1) {
+					linear_coefficients[k][j] += 1;
+				}
+			}
+			cout << "lin coeffs: " << endl << linear_coefficients<<endl<<endl;
+		}
+	}
+	*/
+	//cout << deg(hfe);
+	Vec<Mat<GF2>> quadratic_coefficients;
+	for (int i = 0; i < deg_n; i++) {
+		Mat<GF2> matrix;
+		matrix.SetDims(deg_n, deg_n);
+		quadratic_coefficients.append(matrix);
+	}
+
+	GF2E A;
+	GF2E temp;
+	long index;
+	for (int i = 0; i < n; i++) {
+		for (int j = i; j < n; j++) {
+			if (i != j) {
+				index = (pow(2, i) + pow(2, j));
+				if (index <= deg(hfe)) {
+					A = hfe[index];
+					//cout << "A" << i << "," << j << " je: "<<A<<endl;
+					for (int r = 1; r <= deg_n; r++) {
+						for (int s = 1; s <= deg_n; s++) {
+							//cout << "r=" << r << ",s=" << s << "   alfa^"<< (((r - 1) * pow(2, i)) + ((s - 1) * pow(2, j))) <<endl;
+							temp = A * power(alfa, (((r - 1) * pow(2, i)) + ((s - 1) * pow(2, j))));
+							//cout << "temp = " << temp << endl<<endl;
+							for (int k = 0; k <= n; k++) {
+								GF2 pozicia = coeff(temp._GF2E__rep, k);
+								if (pozicia == 1) {
+									cout << "coeff je 1 pre i=" << i << ", j=" << j << ", r=" << r << ", s=" << s<<endl;
+									quadratic_coefficients[k][r-1][s-1] += 1;
+								}
+							}
+						}
+					}
+				}
+			}
+			//cout << endl;
+		}
+	}
+	Vec<Polynomial<GF2>> sustava_polynomov;
+	for (int i = 0; i < deg_n; i++) {
+		Polynomial<GF2> temp(deg_n,quadratic_coefficients[i], linear_coefficients[i], abs_coefficients[i]);
+		temp.fixMatrix();
+		sustava_polynomov.append(temp);
+	}
+	cout << quadratic_coefficients[0] << endl << quadratic_coefficients[1] << endl << quadratic_coefficients[2];
+	cout << sustava_polynomov[0].getQuadraticCoefficient() << endl << sustava_polynomov[1].getQuadraticCoefficient()<<endl<<sustava_polynomov[2].getQuadraticCoefficient();
 	return 0;
 }
+
 
