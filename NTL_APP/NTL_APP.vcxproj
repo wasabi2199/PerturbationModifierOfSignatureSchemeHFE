@@ -128,14 +128,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Polynom.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\NTL\x64\Debug\NTL.lib" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="polynom.h" />
+    <ClInclude Include="AffineTransformation.h" />
+    <ClInclude Include="HFE.h" />
     <ClInclude Include="Polynomial.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

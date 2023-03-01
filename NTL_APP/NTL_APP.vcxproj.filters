@@ -18,18 +18,18 @@
     <ClCompile Include="Source.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Polynom.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\NTL\x64\Debug\NTL.lib" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="polynom.h">
+    <ClInclude Include="HFE.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Polynomial.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AffineTransformation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
