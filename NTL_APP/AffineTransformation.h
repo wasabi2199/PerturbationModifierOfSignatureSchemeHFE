@@ -98,9 +98,9 @@ namespace AffineTransformation {
 			tempLinearCoefficient.SetLength(n);
 
 			for (int j = 0; j < m; j++) {
-				tempCuadraticCoefficient += matrix_T[j][i] * polynomials[j].getQuadraticCoefficient();
-				tempLinearCoefficient += matrix_T[j][i] * polynomials[j].getLinearCoefficient();
-				tempAbsolutCoefficient += matrix_T[j][i] * polynomials[j].getConstant();
+				tempCuadraticCoefficient += matrix_T[i][j] * polynomials[j].getQuadraticCoefficient();
+				tempLinearCoefficient += matrix_T[i][j] * polynomials[j].getLinearCoefficient();
+				tempAbsolutCoefficient += matrix_T[i][j] * polynomials[j].getConstant();
 			}
 
 			tempAbsolutCoefficient += vector_T[i];
