@@ -19,7 +19,15 @@ namespace HFE {
 		BuildIrred(modulus, modulus_deg); //nahodny ireduc polynom modulus_deg stupna
 		GF2E::init(modulus);
 		GF2EX hfe;
-		random(hfe, hfe_deg);
+		SetCoeff(hfe, 0, random_GF2E());
+		for (long i = 0; (1 << i) < hfe_deg; i++) {
+			SetCoeff(hfe, (1 << i), random_GF2E());
+		}
+		for (long i = 0; (i << 1) < hfe_deg;i++) {
+			for (long j = i + 1; ((i << 1) + (j << 1)) < hfe_deg; j++) {
+				SetCoeff(hfe, ((i << 1) + (j << 1)), random_GF2E());
+			}
+		}
 		return hfe;
 	}
 

@@ -50,10 +50,10 @@ namespace AffineTransformation {
 	}
 
 	template <class T>
-	Vec<Polynomial<T>> affineTransformation(Vec<Polynomial<T>> polynomials) {
+	Vec<Polynomial<T>> affineTransformation(Vec<Polynomial<T>> polynomials, Mat<T>& matrix_T, Vec<T>& vector_T) {
 		long n = polynomials[0].getQuadraticCoefficient().NumRows();
-		Mat<T> matrix_T = generateAffineTransformationMatrix<T>(n); //musi byt invertovatelne nad GF2
-		Vec<T> vector_T = generateAffineTransformationVector<T>(n); //nahodny vektor hodnot GF2
+		matrix_T = generateAffineTransformationMatrix<T>(n); //musi byt invertovatelne nad GF2
+		vector_T = generateAffineTransformationVector<T>(n); //nahodny vektor hodnot GF2
 		cout << endl << "matrix_T: " << endl << matrix_T<<endl;
 		cout << "vector_T: " << endl << vector_T<<endl;
 		/*Mat<T> matrix_T;
@@ -72,11 +72,11 @@ namespace AffineTransformation {
 	}
 
 	template <class T>
-	Vec<Polynomial<T>> affineTransformationS(Vec<Polynomial<T>> polynomials) {
+	Vec<Polynomial<T>> affineTransformationS(Vec<Polynomial<T>> polynomials, Mat<T>& matrix_T, Vec<T>& vector_T) {
 		long m = polynomials.length();
 		long n = polynomials[0].getQuadraticCoefficient().NumRows();
-		Mat<T> matrix_T = generateAffineTransformationMatrix<T>(m); 
-		Vec<T> vector_T = generateAffineTransformationVector<T>(m);
+		matrix_T = generateAffineTransformationMatrix<T>(m);
+		vector_T = generateAffineTransformationVector<T>(m);
 		cout << endl << "matrix_S: " << endl << matrix_T << endl;
 		cout << "vector_S: " << endl << vector_T << endl;
 		/*Mat<T> matrix_T;
@@ -98,9 +98,9 @@ namespace AffineTransformation {
 			tempLinearCoefficient.SetLength(n);
 
 			for (int j = 0; j < m; j++) {
-				tempCuadraticCoefficient += matrix_T[i][j] * polynomials[j].getQuadraticCoefficient();
-				tempLinearCoefficient += matrix_T[i][j] * polynomials[j].getLinearCoefficient();
-				tempAbsolutCoefficient += matrix_T[i][j] * polynomials[j].getConstant();
+				tempCuadraticCoefficient += matrix_T[j][i] * polynomials[j].getQuadraticCoefficient();
+				tempLinearCoefficient += matrix_T[j][i] * polynomials[j].getLinearCoefficient();
+				tempAbsolutCoefficient += matrix_T[j][i] * polynomials[j].getConstant();
 			}
 
 			tempAbsolutCoefficient += vector_T[i];
