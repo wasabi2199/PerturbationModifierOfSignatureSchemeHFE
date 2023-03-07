@@ -21,6 +21,17 @@ namespace AffineTransformation {
 	}
 
 	template <class T>
+	Vec<T> applyInverseAffineTransformation(const Vec<T>& y, const Mat<T>& affineTransformationMatrix, const Vec<T>& affineTransformationVector) {
+		Vec<T> x;
+		Mat<T> inverseMatrix;
+		long m = affineTransformationMatrix.NumCols();
+		inverseMatrix.SetDims(m, m);
+		inv(inverseMatrix, affineTransformationMatrix);
+		x = (y - affineTransformationVector) * inverseMatrix ;
+		return x;
+	}
+
+	template <class T>
 	Mat<T> generateAffineTransformationMatrix(long n) {
 		Mat<T> transformationMatrix;
 		Mat<T> temp_matrix;

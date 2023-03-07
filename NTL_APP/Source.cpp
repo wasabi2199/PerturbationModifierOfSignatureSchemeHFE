@@ -13,6 +13,7 @@
 #include"Polynomial.h"
 #include"AffineTransformation.h"
 #include"HFE.h"
+#include "NTL/GF2EXFactoring.h"
 
 NTL_CLIENT
 
@@ -30,8 +31,9 @@ int main()
 	//GF2EX hfe;
 	//cout << "zadaj hfe polynom> ";
 	//cin >> hfe;
+	//SetSeed(conv<ZZ>(1));
 	long modulus_deg = deg(modulus);
-	long hfe_deg = 16;
+	long hfe_deg = 7;
 	GF2EX hfe = HFE::generateHFEPolynomial(modulus_deg, hfe_deg);
 	cout << "hfe " << hfe << endl;
 	
@@ -116,7 +118,44 @@ int main()
 	}
 
 	
+	Vec<GF2> hodnoty_T;
+	Vec<GF2> hodnoty_TP;
+	Vec<GF2> hodnoty_TPS;
+	
+	//cout <<"hodnoty T "<< hodnoty_ << endl;
 
+	//cout <<"hodnoty TF "<< hodnoty_T << endl;
+	hodnoty_TPS = random_vec_GF2(modulus_deg);
+	hodnoty_TP = AffineTransformation::applyInverseAffineTransformation(hodnoty_TPS, matrix_S, vector_S);
+	//cout << x<<endl<<hodnoty_T<<endl<<hodnoty_TP<<endl<<hodnoty_TPS;
+	GF2E Y = conv<GF2E>(conv<GF2X>(hodnoty_TP));
+	GF2EX hfe_y = hfe - Y;
+	MakeMonic(hfe_y);
+	Vec<Pair<GF2EX, long>> korene;
+	korene = berlekamp(hfe_y);
+	GF2E X;
+	bool existuje_koren = false;
+	for (auto c : korene) {
+		if (deg(c.a) == 1) {
+			X = ConstTerm(c.a);
+			existuje_koren = true;
+			break;
+		}
+	}
+	if (existuje_koren == false) {
+		cout << "nema riesenie"<<endl;
+	}
+	Vec<GF2> x = conv<Vec<GF2>>(conv<GF2X>(X));
+	x.SetLength(modulus_deg);
+	x = AffineTransformation::applyInverseAffineTransformation(x, matrix_T, vector_T);
+
+	Vec<GF2> hodnoty_PK;
+	for (int i = 0; i < modulus_deg; i++) {
+		hodnoty_PK.append(sustava3[i].getConstant());
+		hodnoty_PK[i] += sustava3[i].getLinearCoefficient() * x + x * sustava3[i].getQuadraticCoefficient() * x;
+
+	}
+	cout << hodnoty_PK << " " << hodnoty_TPS;
 	return 0;
 }
 
