@@ -7,6 +7,7 @@
 #include<NTL/GF2.h>
 #include<NTL/vec_GF2.h>
 #include<NTL/mat_GF2.h>
+#include <iostream>
 
 NTL_CLIENT
 
@@ -61,6 +62,8 @@ public:
 			}
 		}
 	}
+	//friend ostream& operator<<(ostream& os, const T& poly);
+
 
 private:
 	void generateRandom(){
@@ -89,9 +92,27 @@ private:
 			m_constant = random_GF2();
 		}
 	}
-
+	 
 private:
 	Mat<T> m_quadratic_coefficient;
 	Vec<T> m_linear_coefficient;
 	T m_constant;
 };
+
+template <class T>
+ostream& operator<<(ostream& os, const Polynomial<T>& poly)
+{
+	os << endl << "quadr coeff: " << endl << poly.getQuadraticCoefficient() << endl;
+	os << "lin coeff: " << poly.getLinearCoefficient() << endl;
+	os << "abs coeff: " << poly.getConstant() << endl;
+	return os;
+}
+
+template <class T>
+ostream& operator<<(ostream& os, const Vec<Polynomial<T>>& polynomials)
+{
+	for (const auto& poly : polynomials) {
+		os << poly;
+	}
+	return os;
+}

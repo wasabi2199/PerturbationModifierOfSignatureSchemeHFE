@@ -135,6 +135,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AffineTransformation.h" />
+    <ClInclude Include="PrivateKey.h" />
+    <ClInclude Include="PublicKey.h" />
+    <ClInclude Include="Signature.h" />
     <ClInclude Include="HFE.h" />
     <ClInclude Include="Polynomial.h" />
   </ItemGroup>

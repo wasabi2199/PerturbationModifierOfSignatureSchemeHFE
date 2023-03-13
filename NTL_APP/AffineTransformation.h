@@ -65,14 +65,8 @@ namespace AffineTransformation {
 		long n = polynomials[0].getQuadraticCoefficient().NumRows();
 		matrix_T = generateAffineTransformationMatrix<T>(n); //musi byt invertovatelne nad GF2
 		vector_T = generateAffineTransformationVector<T>(n); //nahodny vektor hodnot GF2
-		cout << endl << "matrix_T: " << endl << matrix_T<<endl;
-		cout << "vector_T: " << endl << vector_T<<endl;
-		/*Mat<T> matrix_T;
-		Vec<T> vector_T;
-		cout << endl << "transformacna matica: ";
-		cin >> matrix_T;
-		cout << endl << "transformacny vektor: ";
-		cin >> vector_T;*/
+		//cout << endl << "matrix_T: " << endl << matrix_T<<endl;
+		//cout << "vector_T: " << endl << vector_T<<endl;
 		Vec<Polynomial<T>> newPolynomials;
 
 		for (int i = 0; i < polynomials.length(); i++) {
@@ -88,14 +82,8 @@ namespace AffineTransformation {
 		long n = polynomials[0].getQuadraticCoefficient().NumRows();
 		matrix_T = generateAffineTransformationMatrix<T>(m);
 		vector_T = generateAffineTransformationVector<T>(m);
-		cout << endl << "matrix_S: " << endl << matrix_T << endl;
-		cout << "vector_S: " << endl << vector_T << endl;
-		/*Mat<T> matrix_T;
-		Vec<T> vector_T;
-		cout << endl << "transformacna matica: ";
-		cin >> matrix_T;
-		cout << endl << "transformacny vektor: ";
-		cin >> vector_T;*/
+		//cout << endl << "matrix_S: " << endl << matrix_T << endl;
+		//cout << "vector_S: " << endl << vector_T << endl;
 		Vec<Polynomial<T>> newPolynomials;
 		Mat<T> tempCuadraticCoefficient;
 		Vec<T> tempLinearCoefficient;

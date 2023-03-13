@@ -20,16 +20,23 @@ namespace HFE {
 		GF2E::init(modulus);
 		GF2EX hfe;
 		SetCoeff(hfe, 0, random_GF2E());
+
 		for (long i = 0; (1 << i) < hfe_deg; i++) {
 			SetCoeff(hfe, (1 << i), random_GF2E());
 		}
+
 		for (long i = 0; (i << 1) < hfe_deg;i++) {
 			for (long j = i + 1; ((i << 1) + (j << 1)) < hfe_deg; j++) {
 				SetCoeff(hfe, ((i << 1) + (j << 1)), random_GF2E());
 			}
 		}
+
+		cout << "modulus = " << modulus << endl;
+		cout << "hfe " << hfe << endl;
+
 		return hfe;
 	}
+	
 
 	GF2E getAlpha() 
 	{
@@ -66,7 +73,6 @@ namespace HFE {
 		long hfe_deg = deg(hfe);
 		GF2E B;  //current hfe (2^i) coefficient 
 		GF2E alpha = getAlpha();
-		cout << "alfa je: "<< alpha << endl;
 
 		for (int i = 0; i < hfe_deg; i++)
 		{
@@ -74,10 +80,7 @@ namespace HFE {
 				break;
 			}
 			B = hfe[pow(2, i)];
-			//cout << "B je: " << B << endl;
 			for (int j = 0; j < 3; j++) {
-				//cout << "alfa^" << (j * pow(2, i)) << " je: " << power(alpha, (j * pow(2, i))) << endl;
-				//cout << "B * alfa je: " << B * power(alpha, (j * pow(2, i))) << endl;
 				GF2E aaa = B * power(alpha, (j * pow(2, i)));
 				for (int k = 0; k < modulus_deg; k++) {
 					GF2 pozicia = coeff(aaa._GF2E__rep, k);
@@ -85,7 +88,6 @@ namespace HFE {
 						linear_coefficients[k][j] += 1;
 					}
 				}
-				//cout << "lin coeffs: " << endl << linear_coefficients << endl << endl;
 			}
 		}
 
@@ -113,16 +115,12 @@ namespace HFE {
 					index = (pow(2, i) + pow(2, j));
 					if (index <= deg(hfe)) {
 						A = hfe[index];
-						//cout << "A" << i << "," << j << " je: "<<A<<endl;
 						for (int r = 1; r <= modulus_deg; r++) {
 							for (int s = 1; s <= modulus_deg; s++) {
-								//cout << "r=" << r << ",s=" << s << "   alfa^"<< (((r - 1) * pow(2, i)) + ((s - 1) * pow(2, j))) <<endl;
 								temp = A * power(alpha, (((r - 1) * pow(2, i)) + ((s - 1) * pow(2, j))));
-								//cout << "temp = " << temp << endl<<endl;
 								for (int k = 0; k < modulus_deg; k++) {
-									GF2 pozicia = coeff(temp._GF2E__rep, k);
-									if (pozicia == 1) {
-										//cout << "coeff je 1 pre i=" << i << ", j=" << j << ", r=" << r << ", s=" << s << endl;
+									GF2 position = coeff(temp._GF2E__rep, k);
+									if (position == 1) {
 										quadratic_coefficients[k][r - 1][s - 1] += 1;
 									}
 								}
@@ -133,11 +131,23 @@ namespace HFE {
 			}
 		}
 
-		/*for (int i = 0; i < quadratic_coefficients.length(); i++) {
-			cout << quadratic_coefficients[i] << endl;
-		}*/
-
 		return quadratic_coefficients;
+	}
+
+	Vec<Polynomial<GF2>> hfeToSystemOfPolynomials(long modulus_deg, GF2EX hfe) 
+	{
+		Vec<GF2> abs_coefficients = getAbsoluteCoefficients(modulus_deg, hfe);
+		Vec<Vec<GF2>> linear_coefficients = getLinearCoefficients(modulus_deg, hfe);
+		Vec<Mat<GF2>> quadratic_coefficients = getQuadraticCoefficients(modulus_deg, hfe);
+		Vec<Polynomial<GF2>> system_of_polynomials;
+
+		for (int i = 0; i < modulus_deg; i++) {
+			Polynomial<GF2> temp(modulus_deg, quadratic_coefficients[i], linear_coefficients[i], abs_coefficients[i]);
+			temp.fixMatrix();
+			system_of_polynomials.append(temp);
+		}
+
+		return system_of_polynomials;
 	}
 
 
