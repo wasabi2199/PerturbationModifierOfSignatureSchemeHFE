@@ -35,9 +35,11 @@ int main()
 
 	long modulus_deg = 3; //= deg(modulus);
 	long hfe_deg = 7;
+	long t = 2;
 	GF2EX hfe = HFE::generateHFEPolynomial(modulus_deg, hfe_deg);
 
 	Vec<Polynomial<GF2>> sustava_polynomov = HFE :: hfeToSystemOfPolynomials(modulus_deg, hfe);
+	cout << sustava_polynomov<<endl;
 
 	Mat<GF2> matrix_T;
 	Vec<GF2> vector_T;
@@ -53,6 +55,13 @@ int main()
 	cout << "signature " << signature << endl;
 
 	cout << Signature::verifySignature(signature, message, public_key, modulus_deg);
+
+	Vec<GF2E> betas;
+	Vec<Mat<GF2>> perturbation_polynomials;
+	Vec<Polynomial<GF2>> pert_sys_of_polynomials = HFE::perturbation(t, betas, perturbation_polynomials, modulus_deg, sustava_polynomov);
+	cout << betas<<endl;
+	cout << perturbation_polynomials << endl;
+	cout << pert_sys_of_polynomials << endl;
 
 	return 0;
 }

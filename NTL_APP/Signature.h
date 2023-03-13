@@ -44,7 +44,9 @@ namespace Signature {
 			PK_values.append(public_key[i].getConstant());
 			PK_values[i] += public_key[i].getLinearCoefficient() * signature + signature * public_key[i].getQuadraticCoefficient() * signature;
 		}
+
 		cout << "PK_values " << PK_values << endl;
+
 		if (message == PK_values) {
 			return true;
 		}
