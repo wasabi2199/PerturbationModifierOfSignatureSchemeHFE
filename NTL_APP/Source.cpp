@@ -54,15 +54,20 @@ int main()
 	cout << "message " << message << endl;
 	cout << "signature " << signature << endl;
 
-	cout << Signature::verifySignature(signature, message, public_key, modulus_deg);
+	cout << Signature::verifySignature(signature, message, public_key, modulus_deg) << endl;
 
 	Vec<GF2E> betas;
 	Vec<Mat<GF2>> perturbation_polynomials;
 	Vec<Polynomial<GF2>> pert_sys_of_polynomials = HFE::perturbation(t, betas, perturbation_polynomials, modulus_deg, sustava_polynomov);
-	cout << betas<<endl;
-	cout << perturbation_polynomials << endl;
-	cout << pert_sys_of_polynomials << endl;
+	cout << "//////" << endl << "betas " << betas << endl;
+	cout << "perturbation_polynomials " << endl << perturbation_polynomials << endl;
+	cout << "pert_sys_of_polynomials " << pert_sys_of_polynomials << endl;
 
+	Vec<Polynomial<GF2>> public_key_perturbed = PublicKey::getPublicKey(matrix_T, vector_T, matrix_S, vector_S, pert_sys_of_polynomials);
+	Vec<GF2> signature_perturbed = Signature :: generateSignaturePerturbed(matrix_T, vector_T, matrix_S, vector_S, hfe, perturbation_polynomials,betas, message, modulus_deg, t);
+	cout << signature_perturbed << endl;
+	cout << Signature::verifySignature(signature_perturbed, message, public_key_perturbed, modulus_deg) << endl;
+	
 	return 0;
 }
 

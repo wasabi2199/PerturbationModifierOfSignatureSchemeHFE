@@ -37,9 +37,6 @@ namespace HFE {
 		return hfe;
 	}
 
-
-	
-
 	GF2E getAlpha() 
 	{
 		GF2X alfa_temp;
@@ -153,24 +150,24 @@ namespace HFE {
 	}
 
 	Vec<Polynomial<GF2>> perturbation(long t, Vec<GF2E>& betas, Vec<Mat<GF2>>& perturbation_polynomials, long modulus_deg, const Vec<Polynomial<GF2>>& system_of_polynomials) {
+		GF2E alpha = getAlpha();
+		Vec<Polynomial<GF2>> pert_sys_of_poly = system_of_polynomials;
+		
 		for (int i = 0; i < t; i++) {
 			perturbation_polynomials.append(random_mat_GF2(modulus_deg, modulus_deg));
 			betas.append(random_GF2E());
 		}
-		GF2E alfa = getAlpha();
-		Vec<Polynomial<GF2>> pert_sys_of_poly = system_of_polynomials;
+
 		for (int i = 0; i < t; i++) {
 			GF2E beta_alpha = betas[i];
-			for (int j = 0; j < modulus_deg; j++) {
-				Vec<GF2> beta_alpha_vec = conv<Vec<GF2>>(conv<GF2X>(beta_alpha));
-				for (int k = 0; k < beta_alpha_vec.length(); k++) {
-					if (IsOne(beta_alpha_vec[k])) {
-						pert_sys_of_poly[k].setQuadraticCoefficient(pert_sys_of_poly[k].getQuadraticCoefficient() + perturbation_polynomials[i]);
-					}
+			Vec<GF2> beta_alpha_vec = conv<Vec<GF2>>(conv<GF2X>(beta_alpha));
+			for (int k = 0; k < beta_alpha_vec.length(); k++) {
+				if (IsOne(beta_alpha_vec[k])) {
+					pert_sys_of_poly[k].setQuadraticCoefficient(pert_sys_of_poly[k].getQuadraticCoefficient() + perturbation_polynomials[i]);
 				}
-				beta_alpha *= alfa;
 			}
 		}
+
 		return pert_sys_of_poly;
 	}
 
