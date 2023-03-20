@@ -50,29 +50,63 @@ int main()
 	Vec<Polynomial<GF2>> public_key = PublicKey::getPublicKey(matrix_T, vector_T, matrix_S, vector_S, sustava_polynomov);
 
 	Vec<GF2> message = random_vec_GF2(modulus_deg - a);
-	Vec<GF2> signature = Signature::generateSignature(a, hfe, matrix_T, vector_T, matrix_S, vector_S, message, modulus_deg);
+	Vec<GF2> signature;
+	bool valid = false;
+	int counter = 0;
+	while (valid == false) {
+		valid = Signature::generateSignature(signature, a, hfe, matrix_T, vector_T, matrix_S, vector_S, message, modulus_deg);
+		counter += 1;
+		if (counter >= 20) {
+			break;
+		}
+	}
+	if (counter < 0) {
+		cout << "message " << message << endl;
+		cout << "signature " << signature << endl;
+		cout << Signature::verifySignature(a, signature, message, public_key, modulus_deg) << endl;
+	}
+	cout << "//////////" << endl;
 
-	cout << "message " << message << endl;
-	cout << "signature " << signature << endl;
-
-	cout << Signature::verifySignature(a, signature, message, public_key, modulus_deg) << endl;
 
 	Vec<GF2E> betas;
 	Vec<Mat<GF2>> perturbation_polynomials;
 	Vec<Polynomial<GF2>> pert_sys_of_polynomials = HFE::perturbation(t, betas, perturbation_polynomials, modulus_deg, sustava_polynomov);
-	cout << "//////" << endl << "betas " << betas << endl;
+	cout << "betas " << betas << endl;
 	cout << "perturbation_polynomials " << endl << perturbation_polynomials << endl;
 	cout << "pert_sys_of_polynomials " << pert_sys_of_polynomials << endl;
 
 	Vec<Polynomial<GF2>> public_key_perturbed = PublicKey::getPublicKey(matrix_T, vector_T, matrix_S, vector_S, pert_sys_of_polynomials);
-	Vec<GF2> signature_perturbed = Signature :: generateSignaturePerturbed(a, matrix_T, vector_T, matrix_S, vector_S, hfe, perturbation_polynomials,betas, message, modulus_deg, t);
-	cout << signature_perturbed << endl;
-	cout << Signature::verifySignature(a, signature_perturbed, message, public_key_perturbed, modulus_deg) << endl;
-	
-	Vec<GF2> signature_perturbedP = Signature::generateSignaturePerturbedP(a, pert_sys_of_polynomials, matrix_T, vector_T, matrix_S, vector_S, hfe, perturbation_polynomials, betas, message, modulus_deg, t);
-	cout << signature_perturbedP << endl;
-	cout << Signature::verifySignature(a, signature_perturbedP, message, public_key_perturbed, modulus_deg) << endl;
+	Vec<GF2> signature_perturbed;
+	valid = false;
+	counter = 0;
+	while (valid == false) {
+		valid = Signature::generateSignaturePerturbed(signature_perturbed, a, matrix_T, vector_T, matrix_S, vector_S, hfe, perturbation_polynomials, betas, message, modulus_deg, t);
+		counter += 1;
+		if (counter >= 20) {
+			break;
+		}
+	}
+	if (counter < 20) {
+		cout << "signature_perturbed " << signature_perturbed << endl;
+		cout << Signature::verifySignature(a, signature_perturbed, message, public_key_perturbed, modulus_deg) << endl;
+	}
+	cout << "//////////////////////////////////////////" << endl;
 
+	Vec<GF2> signature_perturbed_projection;
+	valid = false;
+	counter = 0;
+	while (valid == false) {
+		valid = Signature::generateSignaturePerturbedProjection(signature_perturbed_projection, a, pert_sys_of_polynomials, matrix_T, vector_T, matrix_S, vector_S, hfe, perturbation_polynomials, betas, message, modulus_deg, t);
+		counter += 1;
+		if (counter >= 20) {
+			break;
+		}
+	}
+	if (counter < 20) {
+		cout << "signature_perturbed_projection " << signature_perturbed_projection << endl;
+		cout << Signature::verifySignature(a, signature_perturbed_projection, message, public_key_perturbed, modulus_deg) << endl;
+	}
+	
 	return 0;
 }
 

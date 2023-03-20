@@ -5,13 +5,14 @@
 #include <bitset>
 
 namespace Signature {
-	template <class T>
-	Vec<T> generateSignature(long a,  const GF2EX& hfe, const Mat<T>& matrix_T, const Vec<T>& vector_T, const Mat<T>& matrix_S, const Vec<T>& vector_S, const Vec<GF2>& y_without_a, long modulus_deg) {
+
+	bool generateSignature(Vec<GF2>& signature, long a,  const GF2EX& hfe, const Mat<GF2>& matrix_T, const Vec<GF2>& vector_T, const Mat<GF2>& matrix_S, const Vec<GF2>& vector_S, const Vec<GF2>& y_without_a, long modulus_deg) {
 		Vec<GF2> hodnoty_TP;
 		Vec<GF2> y = y_without_a;
 		for (int i = 0; i < a; i++) {
 			y.append(random_GF2());
 		}
+
 		//inverzna transformacia ku T na vektor pre spravu (vektor y)
 		hodnoty_TP = AffineTransformation::applyInverseAffineTransformation(y, matrix_S, vector_S);
 
@@ -32,14 +33,15 @@ namespace Signature {
 		}
 		if (root_exists == false) {
 			cout << "nema riesenie" << endl;
+			return false;
 		}
 
 		//invertovanie vektora x podla transformacie T (x = platny podpis)
 		Vec<GF2> x = conv<Vec<GF2>>(conv<GF2X>(X));
 		x.SetLength(modulus_deg);
-		x = AffineTransformation::applyInverseAffineTransformation(x, matrix_T, vector_T);
+		signature = AffineTransformation::applyInverseAffineTransformation(x, matrix_T, vector_T);
 
-		return x;
+		return true;
 	}
 
 	bool verifySignature(long a, const Vec<GF2>& signature, const Vec<GF2>& message, const Vec<Polynomial<GF2>>& public_key, long modulus_deg) {
@@ -57,21 +59,19 @@ namespace Signature {
 		return false;
 	}
 
-	template <class T>
-	Vec<GF2> generateSignaturePerturbed(long a, const Mat<T>& matrix_T, const Vec<T>& vector_T, const Mat<T>& matrix_S, const Vec<T>& vector_S, const GF2EX& hfe, const Vec<Mat<GF2>>& perturbation_polynomials, const Vec<GF2E>& betas, const Vec<GF2>& y_without_a, long modulus_deg, long const t) {
+	bool generateSignaturePerturbed(Vec<GF2>& signature, long a, const Mat<GF2>& matrix_T, const Vec<GF2>& vector_T, const Mat<GF2>& matrix_S, const Vec<GF2>& vector_S, const GF2EX& hfe, const Vec<Mat<GF2>>& perturbation_polynomials, const Vec<GF2E>& betas, const Vec<GF2>& y_without_a, long modulus_deg, long const t) {
 		Vec<GF2> hodnoty_TP;
 		Vec<GF2> y = y_without_a;
 		for (int i = 0; i < a; i++) {
 			y.append(random_GF2());
 		}
+
 		//inverzna transformacia ku T na vektor pre spravu (vektor y)
 		hodnoty_TP = AffineTransformation::applyInverseAffineTransformation(y, matrix_S, vector_S);
 		bool root_exists = false;
 		GF2E X;
 		Vec<GF2> pert_root;
 		Vec<GF2> X_vec;
-		//long const tt = 4;
-		//ak by t bolo const
 		Vec<Vec<GF2>> vektory2;
 		for (int i = 0; i < pow(2, t); i++) {
 			Vec<GF2> bit_vec_GF2;
@@ -115,17 +115,15 @@ namespace Signature {
 		}
 		if (root_exists == false) {
 			cout << "nenaslo sa riesenie pri inverzii " << endl;
-			return Vec<GF2>();
+			return false;
 		}
 		//invertovanie vektora x podla transformacie T (x = platny podpis)
-		Vec<GF2> x = AffineTransformation::applyInverseAffineTransformation(X_vec, matrix_T, vector_T);
+		signature = AffineTransformation::applyInverseAffineTransformation(X_vec, matrix_T, vector_T);
 
-		return x;
-		
+		return true;
 	}
 
-	template <class T>
-	Vec<GF2> generateSignaturePerturbedP(long a, Vec<Polynomial<GF2>>pert_sys_of_polynomials, const Mat<T>& matrix_T, const Vec<T>& vector_T, const Mat<T>& matrix_S, const Vec<T>& vector_S, const GF2EX& hfe, const Vec<Mat<GF2>>& perturbation_polynomials, const Vec<GF2E>& betas, const Vec<GF2>& y_without_a, long modulus_deg, long const t) {
+	bool generateSignaturePerturbedProjection(Vec<GF2>& signature, long a, Vec<Polynomial<GF2>>pert_sys_of_polynomials, const Mat<GF2>& matrix_T, const Vec<GF2>& vector_T, const Mat<GF2>& matrix_S, const Vec<GF2>& vector_S, const GF2EX& hfe, const Vec<Mat<GF2>>& perturbation_polynomials, const Vec<GF2E>& betas, const Vec<GF2>& y_without_a, long modulus_deg, long const t) {
 		Vec<GF2> hodnoty_TP;
 		Vec<GF2> y = y_without_a;
 		for (int i = 0; i < a; i++) {
@@ -190,13 +188,12 @@ namespace Signature {
 		}
 		if (root_exists == false) {
 			cout << "nema riesenie" << endl;
-			return Vec<GF2>();
+			return false;
 		}
 
 		//invertovanie vektora x podla transformacie T (x = platny podpis)
-		Vec<GF2> x = AffineTransformation::applyInverseAffineTransformation(X_vec, matrix_T, vector_T);
-		return x;
-
+		signature = AffineTransformation::applyInverseAffineTransformation(X_vec, matrix_T, vector_T);
+		return true;
 	}
 
 }
