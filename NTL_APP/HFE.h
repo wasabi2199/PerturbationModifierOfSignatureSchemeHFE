@@ -25,14 +25,11 @@ namespace HFE {
 			SetCoeff(hfe, (1 << i), random_GF2E());
 		}
 
-		for (long i = 0; (i << 1) < hfe_deg;i++) {
-			for (long j = i + 1; ((i << 1) + (j << 1)) < hfe_deg; j++) {
-				SetCoeff(hfe, ((i << 1) + (j << 1)), random_GF2E());
+		for (long i = 0; (1 << i) < hfe_deg;i++) {
+			for (long j = i + 1; ((1 << i) + (1 << j)) < hfe_deg; j++) {
+				SetCoeff(hfe, ((1 << i) + (1 << j)), random_GF2E());
 			}
 		}
-
-		cout << "modulus = " << modulus << endl;
-		cout << "hfe " << hfe << endl;
 
 		return hfe;
 	}
@@ -79,7 +76,7 @@ namespace HFE {
 				break;
 			}
 			B = hfe[pow(2, i)];
-			for (int j = 0; j < 3; j++) {
+			for (int j = 0; j < modulus_deg; j++) {
 				GF2E aaa = B * power(alpha, (j * pow(2, i)));
 				for (int k = 0; k < modulus_deg; k++) {
 					GF2 pozicia = coeff(aaa._GF2E__rep, k);
@@ -107,11 +104,17 @@ namespace HFE {
 		GF2E alpha = getAlpha();
 		GF2E A;
 		GF2E temp;
-		long index;
-		for (int i = 0; i < hfe_deg; i++) {
-			for (int j = i; j < hfe_deg; j++) {
+		long long index;
+		for (int i = 0; (1<<i) < hfe_deg; i++) {
+			for (int j = i; (1<<j) < hfe_deg; j++) {
 				if (i != j) {
-					index = (pow(2, i) + pow(2, j));
+					//index = (pow(2, i) + pow(2, j));
+					index = (1 << i) + (1 << j);
+					//todo deg+1 alebo deg?
+					if (index > (deg(hfe))) {
+						//cout << "break " << "i = " << i << " j = " << j << endl;
+						break;
+					}
 					if (index <= deg(hfe)) {
 						A = hfe[index];
 						for (int r = 1; r <= modulus_deg; r++) {

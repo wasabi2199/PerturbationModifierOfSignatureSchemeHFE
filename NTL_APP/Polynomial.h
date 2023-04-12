@@ -62,7 +62,6 @@ public:
 			}
 		}
 	}
-	//friend ostream& operator<<(ostream& os, const T& poly);
 
 
 private:

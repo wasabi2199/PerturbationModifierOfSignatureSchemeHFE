@@ -75,15 +75,15 @@ namespace Signature {
 		Vec<Vec<GF2>> vektory2;
 		for (int i = 0; i < pow(2, t); i++) {
 			Vec<GF2> bit_vec_GF2;
-			std::bitset<2> bit_vec(i);
+			//todo
+			std::bitset<10> bit_vec(i);
 			for (int j = 0; j < t; j++) {
 				bit_vec_GF2.append(GF2(bit_vec[j]));
 			}
-			//bit_vec_GF2.SetLength(modulus_deg);
 			vektory2.append(bit_vec_GF2);
 		}
 		for (Vec<GF2> t_values : vektory2) {
-			cout << "t values " << t_values << endl;
+			//cout << "t values " << t_values << endl;
 			GF2EX hfe_betas = hfe;
 			for (int i = 0; i < t; i++) {
 				hfe_betas += betas[i] * t_values[i];
@@ -135,39 +135,37 @@ namespace Signature {
 		GF2E X;
 		Vec<GF2> pert_root;
 		Vec<GF2> X_vec;
-		//long const tt = 4;
 		//ak by t bolo const
 		Vec<Vec<GF2>> vektory2;
 		Vec<GF2E> betas_linear;
 		for (int i = 0; i < pow(2, t); i++) {
 			Vec<GF2> bit_vec_GF2;
-			std::bitset<2> bit_vec(i);
+			std::bitset<10> bit_vec(i);
 			GF2E temp = GF2E();
 			for (int j = 0; j < t; j++) {
 				bit_vec_GF2.append(GF2(bit_vec[j]));
 				temp += bit_vec_GF2[j] * betas[j];
 			}
-			//bit_vec_GF2.SetLength(modulus_deg);
 			vektory2.append(bit_vec_GF2);
 			betas_linear.append(temp);
 		}
 		GF2EX projection_poly;
 		BuildFromRoots(projection_poly, betas_linear);
-		cerr << "proj poly: " << projection_poly << endl;
+		//cerr << "proj poly: " << projection_poly << endl;
 		GF2E hodnoty_TP_projection = eval(projection_poly, conv<GF2E>(conv<GF2X>(hodnoty_TP)));
 		GF2EX hfe_projection = GF2EX();
-		cerr << hodnoty_TP_projection << endl;
+		//cerr << hodnoty_TP_projection << endl;
 		for (long i = 0; i <= deg(projection_poly); i++) {
 			if (!IsZero(coeff(projection_poly, i))) {
 				hfe_projection += coeff(projection_poly, i) * power(hfe, i);
 			}
 		}
-		cerr << "proj hfe: " << hfe_projection << endl;
+		//cerr << "proj hfe: " << hfe_projection << endl;
 		hfe_projection -= hodnoty_TP_projection;
 		MakeMonic(hfe_projection);
 		Vec<Pair<GF2EX, long>> roots;
 		roots = berlekamp(hfe_projection);
-		cerr << roots << endl;
+		//cerr << roots << endl;
 		pert_root.SetLength(modulus_deg);
 		for (auto c : roots) {
 			if (deg(c.a) == 1) {

@@ -27,53 +27,61 @@ NTL_CLIENT
 
 int main()
 {
-	//GF2X modulus;
-	//cout << "zadaj modulus polynom> ";
-	//cin >> modulus;
-	//GF2E::init(modulus);
-	//SetSeed(conv<ZZ>(1));
-
-	long modulus_deg = 3; //= deg(modulus);
-	long hfe_deg = 7;
-	long const t = 2;
-	long a = 1;
+	long modulus_deg = 263; //= deg(modulus);
+	long hfe_deg = 65;
+	const long t = 6;
+	long a = 7;
+	/*long modulus_deg = 263; //= deg(modulus);
+	long hfe_deg = 65;
+	const long t = 6;
+	long a = 7;*/
 	GF2EX hfe = HFE::generateHFEPolynomial(modulus_deg, hfe_deg);
+	cout << "hfe" << endl;
 
-	Vec<Polynomial<GF2>> sustava_polynomov = HFE :: hfeToSystemOfPolynomials(modulus_deg, hfe);
-	cout << sustava_polynomov<<endl;
+	Vec<Polynomial<GF2>> sustava_polynomov = HFE::hfeToSystemOfPolynomials(modulus_deg, hfe);
+	cout << "sustava_polynomov" << endl;	
 
 	Mat<GF2> matrix_T;
 	Vec<GF2> vector_T;
 	Mat<GF2> matrix_S;
 	Vec<GF2> vector_S;
-	
+
 	Vec<Polynomial<GF2>> public_key = PublicKey::getPublicKey(matrix_T, vector_T, matrix_S, vector_S, sustava_polynomov);
+	cout << "public_key" << endl;
 
 	Vec<GF2> message = random_vec_GF2(modulus_deg - a);
+	cout << "message " << message << endl;
 	Vec<GF2> signature;
 	bool valid = false;
 	int counter = 0;
 	while (valid == false) {
 		valid = Signature::generateSignature(signature, a, hfe, matrix_T, vector_T, matrix_S, vector_S, message, modulus_deg);
+		cout << "counter = " << counter << endl;
 		counter += 1;
-		if (counter >= 20) {
+		if (counter >= 500) {
 			break;
 		}
 	}
-	if (counter < 0) {
-		cout << "message " << message << endl;
+	if (counter < 500) {
+		//cout << "message " << message << endl;
 		cout << "signature " << signature << endl;
-		cout << Signature::verifySignature(a, signature, message, public_key, modulus_deg) << endl;
+		bool verifiedSignature = Signature::verifySignature(a, signature, message, public_key, modulus_deg);
+		if (verifiedSignature == true) {
+			cout << "podpis platny" << verifiedSignature << endl;
+		}
+		else {
+			cout << "podpis neplatny = " << verifiedSignature << endl;
+		}
+		
 	}
-	cout << "//////////" << endl;
 
 
 	Vec<GF2E> betas;
 	Vec<Mat<GF2>> perturbation_polynomials;
 	Vec<Polynomial<GF2>> pert_sys_of_polynomials = HFE::perturbation(t, betas, perturbation_polynomials, modulus_deg, sustava_polynomov);
-	cout << "betas " << betas << endl;
-	cout << "perturbation_polynomials " << endl << perturbation_polynomials << endl;
-	cout << "pert_sys_of_polynomials " << pert_sys_of_polynomials << endl;
+	//cout << "betas " << betas << endl;
+	//cout << "perturbation_polynomials " << endl << perturbation_polynomials << endl;
+	//cout << "pert_sys_of_polynomials " << pert_sys_of_polynomials << endl;
 
 	Vec<Polynomial<GF2>> public_key_perturbed = PublicKey::getPublicKey(matrix_T, vector_T, matrix_S, vector_S, pert_sys_of_polynomials);
 	Vec<GF2> signature_perturbed;
@@ -87,10 +95,13 @@ int main()
 		}
 	}
 	if (counter < 20) {
-		cout << "signature_perturbed " << signature_perturbed << endl;
-		cout << Signature::verifySignature(a, signature_perturbed, message, public_key_perturbed, modulus_deg) << endl;
+		cout << "signature_perturbed " << endl;
+		cout << "podpis platny = " << Signature::verifySignature(a, signature_perturbed, message, public_key_perturbed, modulus_deg) << endl;
 	}
-	cout << "//////////////////////////////////////////" << endl;
+	else {
+		cout << "//////////////////////////////////////////" << endl;
+	}
+	
 
 	Vec<GF2> signature_perturbed_projection;
 	valid = false;
@@ -104,9 +115,12 @@ int main()
 	}
 	if (counter < 20) {
 		cout << "signature_perturbed_projection " << signature_perturbed_projection << endl;
-		cout << Signature::verifySignature(a, signature_perturbed_projection, message, public_key_perturbed, modulus_deg) << endl;
+		cout << "podpis platny = " << Signature::verifySignature(a, signature_perturbed_projection, message, public_key_perturbed, modulus_deg) << endl;
 	}
-	
+	else {
+		cout << "//////////////////////////////////////////" << endl;
+	}
+
 	return 0;
 }
 
