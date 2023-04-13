@@ -25,7 +25,7 @@ namespace HFE {
 			SetCoeff(hfe, (1 << i), random_GF2E());
 		}
 
-		for (long i = 0; (1 << i) < hfe_deg;i++) {
+		for (long i = 0; (1 << i) < hfe_deg; i++) {
 			for (long j = i + 1; ((1 << i) + (1 << j)) < hfe_deg; j++) {
 				SetCoeff(hfe, ((1 << i) + (1 << j)), random_GF2E());
 			}

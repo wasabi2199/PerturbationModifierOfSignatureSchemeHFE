@@ -21,7 +21,7 @@ namespace Signature {
 		GF2EX hfe_y = hfe - Y;
 		MakeMonic(hfe_y);
 		Vec<Pair<GF2EX, long>> roots;
-		roots = berlekamp(hfe_y); 
+		roots = CanZass(hfe_y); 
 		GF2E X;
 		bool root_exists = false;
 		for (auto c : roots) {
@@ -92,7 +92,7 @@ namespace Signature {
 			GF2EX hfe_y = hfe_betas - Y;
 			MakeMonic(hfe_y);
 			Vec<Pair<GF2EX, long>> roots;
-			roots = berlekamp(hfe_y);
+			roots = CanZass(hfe_y);
 			pert_root.SetLength(t);
 			for (auto c : roots) {
 				if (deg(c.a) == 1) {
@@ -164,7 +164,8 @@ namespace Signature {
 		hfe_projection -= hodnoty_TP_projection;
 		MakeMonic(hfe_projection);
 		Vec<Pair<GF2EX, long>> roots;
-		roots = berlekamp(hfe_projection);
+		cout << "stupen: " << deg(hfe_projection) << endl;
+		roots = CanZass(hfe_projection);
 		//cerr << roots << endl;
 		pert_root.SetLength(modulus_deg);
 		for (auto c : roots) {

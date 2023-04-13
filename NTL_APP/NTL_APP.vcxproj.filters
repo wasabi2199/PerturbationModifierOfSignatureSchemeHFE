@@ -20,9 +20,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\..\NTL\x64\Debug\NTL.lib" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="HFE.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -41,5 +38,8 @@
     <ClInclude Include="PrivateKey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\..\..\source\repos\NTL_2\x64\Release\NTL_2.lib" />
   </ItemGroup>
 </Project>

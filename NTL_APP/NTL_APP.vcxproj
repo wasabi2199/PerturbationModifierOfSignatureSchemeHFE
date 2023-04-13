@@ -116,9 +116,11 @@
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <SDLCheck>true</SDLCheck>
+      <SDLCheck>false</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\Sabina\Documents\WinNTL-11_5_1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,15 +133,15 @@
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Library Include="..\..\NTL\x64\Debug\NTL.lib" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="AffineTransformation.h" />
     <ClInclude Include="PrivateKey.h" />
     <ClInclude Include="PublicKey.h" />
     <ClInclude Include="Signature.h" />
     <ClInclude Include="HFE.h" />
     <ClInclude Include="Polynomial.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Library Include="..\..\..\..\source\repos\NTL_2\x64\Release\NTL_2.lib" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
