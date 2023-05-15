@@ -134,11 +134,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AffineTransformation.h" />
+    <ClInclude Include="Experiments.h" />
+    <ClInclude Include="Hash.h" />
+    <ClInclude Include="KeyGeneration.h" />
+    <ClInclude Include="picosha2.h" />
+    <ClInclude Include="popl.h" />
     <ClInclude Include="PrivateKey.h" />
     <ClInclude Include="PublicKey.h" />
     <ClInclude Include="Signature.h" />
     <ClInclude Include="HFE.h" />
     <ClInclude Include="Polynomial.h" />
+    <ClInclude Include="SignatureGeneration.h" />
+    <ClInclude Include="SignatureVerification.h" />
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\..\..\source\repos\NTL_2\x64\Release\NTL_2.lib" />

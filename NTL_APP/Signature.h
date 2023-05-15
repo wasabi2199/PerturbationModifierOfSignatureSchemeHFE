@@ -32,7 +32,6 @@ namespace Signature {
 			}
 		}
 		if (root_exists == false) {
-			cout << "nema riesenie" << endl;
 			return false;
 		}
 
@@ -50,9 +49,6 @@ namespace Signature {
 			PK_values.append(public_key[i].getConstant());
 			PK_values[i] += public_key[i].getLinearCoefficient() * signature + signature * public_key[i].getQuadraticCoefficient() * signature;
 		}
-
-		cout << "PK_values " << PK_values << endl;
-		cout << "message " << message << endl;
 		if (message == PK_values) {
 			return true;
 		}
@@ -75,7 +71,6 @@ namespace Signature {
 		Vec<Vec<GF2>> vektory2;
 		for (int i = 0; i < pow(2, t); i++) {
 			Vec<GF2> bit_vec_GF2;
-			//todo
 			std::bitset<10> bit_vec(i);
 			for (int j = 0; j < t; j++) {
 				bit_vec_GF2.append(GF2(bit_vec[j]));
@@ -83,7 +78,6 @@ namespace Signature {
 			vektory2.append(bit_vec_GF2);
 		}
 		for (Vec<GF2> t_values : vektory2) {
-			//cout << "t values " << t_values << endl;
 			GF2EX hfe_betas = hfe;
 			for (int i = 0; i < t; i++) {
 				hfe_betas += betas[i] * t_values[i];
@@ -114,7 +108,6 @@ namespace Signature {
 			}
 		}
 		if (root_exists == false) {
-			cout << "nenaslo sa riesenie pri inverzii " << endl;
 			return false;
 		}
 		//invertovanie vektora x podla transformacie T (x = platny podpis)
@@ -151,22 +144,17 @@ namespace Signature {
 		}
 		GF2EX projection_poly;
 		BuildFromRoots(projection_poly, betas_linear);
-		//cerr << "proj poly: " << projection_poly << endl;
 		GF2E hodnoty_TP_projection = eval(projection_poly, conv<GF2E>(conv<GF2X>(hodnoty_TP)));
 		GF2EX hfe_projection = GF2EX();
-		//cerr << hodnoty_TP_projection << endl;
 		for (long i = 0; i <= deg(projection_poly); i++) {
 			if (!IsZero(coeff(projection_poly, i))) {
 				hfe_projection += coeff(projection_poly, i) * power(hfe, i);
 			}
 		}
-		//cerr << "proj hfe: " << hfe_projection << endl;
 		hfe_projection -= hodnoty_TP_projection;
 		MakeMonic(hfe_projection);
 		Vec<Pair<GF2EX, long>> roots;
-		cout << "stupen: " << deg(hfe_projection) << endl;
 		roots = CanZass(hfe_projection);
-		//cerr << roots << endl;
 		pert_root.SetLength(modulus_deg);
 		for (auto c : roots) {
 			if (deg(c.a) == 1) {
@@ -186,7 +174,6 @@ namespace Signature {
 			}
 		}
 		if (root_exists == false) {
-			cout << "nema riesenie" << endl;
 			return false;
 		}
 

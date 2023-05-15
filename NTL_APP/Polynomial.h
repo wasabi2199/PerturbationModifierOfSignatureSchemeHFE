@@ -14,6 +14,7 @@ NTL_CLIENT
 template <class T> 
 class Polynomial {
 public:
+	/*
 	Polynomial() {
 		cout << "matica kvadratickych koeficientov: ";
 		cin >> m_quadratic_coefficient;
@@ -21,6 +22,9 @@ public:
 		cin >> m_linear_coefficient;
 		cout << "konstanta: ";
 		cin >> m_constant;
+	}
+	*/
+	Polynomial() {
 	}
 	Polynomial(int n) {
 		m_quadratic_coefficient.SetDims(n, n);
@@ -62,8 +66,31 @@ public:
 			}
 		}
 	}
+	
+	friend istream& operator>>(istream& os, Polynomial<T>& poly)
+	{
+		//os << endl << "quadr coeff: " << endl << poly.getQuadraticCoefficient() << endl;
+		//os << "lin coeff: " << poly.getLinearCoefficient() << endl;
+		//os << "abs coeff: " << poly.getConstant() << endl;
+		os >> poly.m_quadratic_coefficient >> poly.m_linear_coefficient >> poly.m_constant;
+		return os;
+	}
 
-
+	friend istream& operator>>(istream& os, Vec<Polynomial<T>>& polynomials)
+	{
+		int counter = 256;
+		while(counter>0) {
+			Polynomial poly;
+			os >> poly;
+			polynomials.append(poly);
+			//poly.print();
+			counter--;
+		}
+		return os;
+	}
+	void print() {
+		cout << "lin coeff: " << this.getLinearCoefficient() << endl;
+	}
 private:
 	void generateRandom(){
 		for (int i = 0; i < m_quadratic_coefficient.NumRows(); i++) {
@@ -92,18 +119,20 @@ private:
 		}
 	}
 	 
-private:
+public:
 	Mat<T> m_quadratic_coefficient;
 	Vec<T> m_linear_coefficient;
 	T m_constant;
+
 };
 
 template <class T>
 ostream& operator<<(ostream& os, const Polynomial<T>& poly)
 {
-	os << endl << "quadr coeff: " << endl << poly.getQuadraticCoefficient() << endl;
-	os << "lin coeff: " << poly.getLinearCoefficient() << endl;
-	os << "abs coeff: " << poly.getConstant() << endl;
+	//os << endl << "quadr coeff: " << endl << poly.getQuadraticCoefficient() << endl;
+	//os << "lin coeff: " << poly.getLinearCoefficient() << endl;
+	//os << "abs coeff: " << poly.getConstant() << endl;
+	os << poly.getQuadraticCoefficient() << poly.getLinearCoefficient() << poly.getConstant();
 	return os;
 }
 
@@ -115,3 +144,4 @@ ostream& operator<<(ostream& os, const Vec<Polynomial<T>>& polynomials)
 	}
 	return os;
 }
+

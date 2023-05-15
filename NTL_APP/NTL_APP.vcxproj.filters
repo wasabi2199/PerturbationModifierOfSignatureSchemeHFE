@@ -38,6 +38,27 @@
     <ClInclude Include="PrivateKey.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Hash.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="picosha2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="popl.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="KeyGeneration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SignatureGeneration.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SignatureVerification.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Experiments.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\..\..\source\repos\NTL_2\x64\Release\NTL_2.lib" />

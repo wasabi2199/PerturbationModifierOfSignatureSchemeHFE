@@ -13,9 +13,8 @@
 
 namespace HFE {
 
-	GF2EX generateHFEPolynomial(long modulus_deg, long hfe_deg) 
+	GF2EX generateHFEPolynomial(long modulus_deg, long hfe_deg, GF2X &modulus)
 	{
-		GF2X modulus;
 		BuildIrred(modulus, modulus_deg); //nahodny ireduc polynom modulus_deg stupna
 		GF2E::init(modulus);
 		GF2EX hfe;
@@ -30,7 +29,7 @@ namespace HFE {
 				SetCoeff(hfe, ((1 << i) + (1 << j)), random_GF2E());
 			}
 		}
-
+		//modulus2 = modulus;
 		return hfe;
 	}
 
