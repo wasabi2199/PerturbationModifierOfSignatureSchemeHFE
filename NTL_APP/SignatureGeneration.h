@@ -15,7 +15,7 @@ namespace SignatureGeneration {
 		std::shared_ptr<popl::Value<string>> file_option, std::shared_ptr<popl::Value<string>> signature_file_option) {
 
 		long modulus_deg = 263; 
-		long hfe_deg = 65;
+		//long hfe_deg = 65;
 		long t = 6;
 		long a = 7;
 		std::string path = ".\\";
@@ -25,20 +25,21 @@ namespace SignatureGeneration {
 		if (modulus_deg_option->is_set()) {
 			modulus_deg = modulus_deg_option->value();
 		}
-		if (hfe_deg_option->is_set()) {
+		/*if (hfe_deg_option->is_set()) {
 			hfe_deg = hfe_deg_option->value();
-		}
+		}*/
 		if (t_option->is_set()) {
-			t = modulus_deg_option->value();
+			t = t_option->value();
 		}
 		if (a_option->is_set()) {
-			a = modulus_deg_option->value();
+			a = a_option->value();
 		}
 		if (key_directory_option->is_set()) {
 			path = key_directory_option->value() + "\\";
 		}
 		if (file_option->is_set()) {
 			file_path = file_option->value();
+			Check::isPathToFile(file_path);
 		}
 		else {
 			cout << "parameter file not set";
@@ -46,6 +47,7 @@ namespace SignatureGeneration {
 		}
 		if (signature_file_option->is_set()) {
 			signature_path = signature_file_option->value() + "\\";
+			Check::isDirectory(signature_path);
 		}
 
 		GF2X modulus;
@@ -57,7 +59,10 @@ namespace SignatureGeneration {
 
 		if (perturbation_option->is_set()) { 
 			path += "perturbed_"; 
+			signature_path += "perturbed_";
 		}
+
+		Check::isPathToFile(path + "private_key.key");
 		std::ifstream file(path + "private_key.key", std::ios::binary);
 		file >> matrix_T >> vector_T >> matrix_S >> vector_S >> modulus;
 		file.close();
@@ -77,8 +82,6 @@ namespace SignatureGeneration {
 			Vec<GF2E> betas;
 			Vec<Mat<GF2>> perturbation_polynomials;
 			file >> hfe >> betas >> perturbation_polynomials;
-
-			signature_path += "perturbed_";
 			while (valid == false) {
 				valid = Signature::generateSignaturePerturbed(signature, a, matrix_T, vector_T, matrix_S, vector_S, hfe, perturbation_polynomials, betas, message, modulus_deg, t);
 				counter++;

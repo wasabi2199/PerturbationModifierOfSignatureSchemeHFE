@@ -59,6 +59,9 @@
     <ClInclude Include="Experiments.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Check.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Library Include="..\..\..\..\source\repos\NTL_2\x64\Release\NTL_2.lib" />

@@ -43,8 +43,9 @@ namespace Experiments {
 		Mat<GF2> matrix_S;
 		Vec<GF2> vector_S;
 		Vec<Polynomial<GF2>> public_key;
+		GF2X modulus;
 
-		hfe = HFE::generateHFEPolynomial(modulus_deg, hfe_deg);
+		hfe = HFE::generateHFEPolynomial(modulus_deg, hfe_deg, modulus);
 		//cout << "hfe:" << hfe << endl;
 		sustava_polynomov = HFE::hfeToSystemOfPolynomials(modulus_deg, hfe);
 		cout << "sustava:" << sustava_polynomov << endl;

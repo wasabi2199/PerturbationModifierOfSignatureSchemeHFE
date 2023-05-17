@@ -47,6 +47,9 @@ namespace Signature {
 		Vec<GF2> PK_values;
 		for (int i = 0; i < modulus_deg - a; i++) {
 			PK_values.append(public_key[i].getConstant());
+			if (signature.length() != public_key[i].getLinearCoefficient().length()) {
+				throw std::invalid_argument("neplatny vstupny parameter");
+			}
 			PK_values[i] += public_key[i].getLinearCoefficient() * signature + signature * public_key[i].getQuadraticCoefficient() * signature;
 		}
 		if (message == PK_values) {
