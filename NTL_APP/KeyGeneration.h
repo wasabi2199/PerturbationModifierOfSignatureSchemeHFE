@@ -18,7 +18,6 @@ namespace KeyGeneration{
 		long modulus_deg = 263; 
 		long hfe_deg = 65;
 		long t = 6;
-		//long a = 7;
 		std::string path = ".\\";
 
 		if (modulus_deg_option->is_set()) {
@@ -30,9 +29,6 @@ namespace KeyGeneration{
 		if (t_option->is_set()) {
 			t = t_option->value();
 		}
-		//if (a_option->is_set()) {
-			//a = a_option->value();
-		//}
 		if (key_directory_option->is_set()) {
 			path = key_directory_option->value() + "\\";
 			Check::isDirectory(path);

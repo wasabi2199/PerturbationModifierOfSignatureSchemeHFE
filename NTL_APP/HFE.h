@@ -107,11 +107,8 @@ namespace HFE {
 		for (int i = 0; (1<<i) < hfe_deg; i++) {
 			for (int j = i; (1<<j) < hfe_deg; j++) {
 				if (i != j) {
-					//index = (pow(2, i) + pow(2, j));
 					index = (1 << i) + (1 << j);
-					//todo deg+1 alebo deg?
 					if (index > (deg(hfe))) {
-						//cout << "break " << "i = " << i << " j = " << j << endl;
 						break;
 					}
 					if (index <= deg(hfe)) {
